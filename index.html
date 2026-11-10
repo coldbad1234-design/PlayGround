@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#07100f" />
+  <title>OUTLAND — Arena Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  <div class="world-vignette"></div>
+  <div class="scanlines"></div>
+
+  <header class="topbar" id="topbar">
+    <a class="brand" href="#" aria-label="Outland home"><span class="brand-mark">O</span><span>OUTLAND<span class="brand-dot">.</span></span></a>
+    <div class="topbar-center"><span class="live-dot"></span> ARENA PROTOCOL <span class="topbar-divider">/</span> SECTOR 07</div>
+    <div class="topbar-right"><span class="rank-icon">✦</span><span>FIELD OPERATIVE</span><span class="rank-level">LVL 08</span></div>
+  </header>
+
+  <main id="mainMenu" class="menu-layer">
+    <section class="hero-panel">
+      <div class="eyebrow"><span class="eyebrow-line"></span> COMBAT SIMULATION <span class="eyebrow-tag">BUILD 0.7.4</span></div>
+      <h1>OWN THE<br><span>OUTLAND.</span></h1>
+      <p class="hero-copy">A hostile world. Your rules.<br>Choose your loadout and enter the arena.</p>
+      <div class="hero-actions">
+        <button id="deployBtn" class="btn-primary"><span>DEPLOY</span><span class="btn-arrow">↗</span></button>
+        <button id="loadoutBtn" class="btn-quiet"><span class="crosshair-icon">⌖</span> WEAPON LAB</button>
+      </div>
+      <div class="hero-foot"><span class="keycap">W</span><span class="keycap">A</span><span class="keycap">S</span><span class="keycap">D</span><span class="control-note">TO MOVE</span><span class="hero-foot-divider"></span><span class="mouse-symbol">⌖</span><span class="control-note">AIM & FIRE</span></div>
+    </section>
+
+    <section class="mode-dock">
+      <div class="dock-heading"><span>01</span> SELECT OPERATION <span class="dock-rule"></span><span class="dock-availability">4 AVAILABLE</span></div>
+      <div class="mode-grid" id="modeGrid">
+        <button class="mode-card selected" data-mode="skirmish">
+          <span class="mode-number">01 / QUICKPLAY</span><span class="mode-title">SKIRMISH</span><span class="mode-desc">First to 25 eliminations</span><span class="mode-meta"><i>◈</i> 8 MIN <b>●</b> SOLO</span><span class="mode-select-mark">↗</span>
+        </button>
+        <button class="mode-card" data-mode="timeattack">
+          <span class="mode-number">02 / SCORE RUN</span><span class="mode-title">TIME ATTACK</span><span class="mode-desc">Score as much as you can</span><span class="mode-meta"><i>◷</i> 90 SEC <b>●</b> SOLO</span><span class="mode-select-mark">↗</span>
+        </button>
+        <button class="mode-card" data-mode="survival">
+          <span class="mode-number">03 / LAST STAND</span><span class="mode-title">SURVIVAL</span><span class="mode-desc">Outlast escalating waves</span><span class="mode-meta"><i>♧</i> ENDLESS <b>●</b> SOLO</span><span class="mode-select-mark">↗</span>
+        </button>
+        <button class="mode-card" data-mode="domination">
+          <span class="mode-number">04 / CONTROL</span><span class="mode-title">DOMINATION</span><span class="mode-desc">Hold the zone to win</span><span class="mode-meta"><i>◎</i> 3 MIN <b>●</b> SOLO</span><span class="mode-select-mark">↗</span>
+        </button>
+      </div>
+      <div class="dock-bottom"><span><span class="live-dot"></span> ALL SYSTEMS OPERATIONAL</span><span>ARENA: <b>THE DRYDOCK</b></span><span>CONTRACT <b>#004817</b></span></div>
+    </section>
+    <div class="menu-side-note">NO BACKUP. NO EXTRACTION.<br><b>MAKE IT COUNT.</b></div>
+  </main>
+
+  <section id="loadoutPanel" class="modal-layer hidden" aria-hidden="true">
+    <div class="loadout-window">
+      <div class="modal-top"><div><div class="eyebrow"><span class="eyebrow-line"></span> ARMORY / FIELD CONFIG</div><h2>WEAPON <span>LAB</span></h2></div><button class="icon-close" id="closeLoadout" aria-label="Close">×</button></div>
+      <div class="loadout-body">
+        <aside class="weapon-list-wrap"><div class="section-label">ARSENAL <span>10 WEAPONS</span></div><div id="weaponList" class="weapon-list"></div></aside>
+        <div class="weapon-config">
+          <div class="weapon-preview"><div class="preview-glow"></div><div class="weapon-big-icon" id="weaponPreviewIcon">⌁</div><div class="weapon-preview-text"><div class="weapon-class" id="weaponClass">ASSAULT RIFLE / FULL AUTO</div><h3 id="weaponName">VANTA-4</h3><div class="weapon-flavor" id="weaponFlavor">Built to hold the line.</div></div><div class="weapon-stat-grid" id="weaponStats"></div></div>
+          <div class="attachments"><div class="section-label">ATTACHMENTS <span>CONFIGURE YOUR BUILD</span></div><div class="attachment-row"><span class="attachment-name"><i>◉</i> OPTIC</span><div class="attachment-options" data-slot="optic"><button class="attach-option active" data-value="iron">IRON SIGHTS</button><button class="attach-option" data-value="reflex">REFLEX</button><button class="attach-option" data-value="precision">4× SCOPE</button></div></div><div class="attachment-row"><span class="attachment-name"><i>⌁</i> BARREL</span><div class="attachment-options" data-slot="barrel"><button class="attach-option active" data-value="standard">STANDARD</button><button class="attach-option" data-value="suppressor">SUPPRESSOR</button><button class="attach-option" data-value="compensator">COMPENSATOR</button></div></div><div class="attachment-row"><span class="attachment-name"><i>◈</i> FINISH</span><div class="attachment-options swatches" data-slot="finish"><button class="swatch active" data-value="ember" aria-label="Ember"></button><button class="swatch" data-value="arctic" aria-label="Arctic"></button><button class="swatch" data-value="moss" aria-label="Moss"></button><button class="swatch" data-value="violet" aria-label="Violet"></button></div></div></div>
+          <div class="config-bottom"><span class="config-hint">ATTACHMENTS AFFECT WEAPON HANDLING</span><button id="equipBtn" class="btn-primary small"><span>EQUIP LOADOUT</span><span class="btn-arrow">↗</span></button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gameHud" class="hud hidden">
+    <div class="hud-top-left"><div class="match-label"><span class="live-dot"></span> LIVE OPERATION</div><div id="hudMode" class="match-mode">SKIRMISH</div><div class="match-sub" id="hudSub">FIRST TO 25 ELIMINATIONS</div></div>
+    <div class="hud-score"><div><span class="score-label">YOU</span><strong id="playerScore">00</strong></div><span class="score-dash">—</span><div><span class="score-label">RIVALS</span><strong id="enemyScore">00</strong></div></div>
+    <div class="hud-top-right"><span class="map-label">DRYDOCK <i>•</i> SECTOR 07</span><span class="timer" id="timer">08:00</span></div>
+    <div class="crosshair" id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+    <div id="hitmarker" class="hitmarker">×</div>
+    <div class="kill-feed" id="killFeed"></div>
+    <div class="center-notice" id="centerNotice"></div>
+    <div class="hud-bottom-left"><div class="health-icon">+</div><div class="health-info"><span>VITALS</span><div class="health-track"><i id="healthBar"></i></div></div><strong id="healthValue">100</strong></div>
+    <div class="hud-bottom-center"><span class="hint-key">W A S D</span> MOVE <span class="hint-key">SHIFT</span> SPRINT <span class="hint-key">R</span> RELOAD <span class="hint-key">ESC</span> MENU</div>
+    <div class="hud-bottom-right"><div class="weapon-hud-copy"><span id="currentWeaponType">ASSAULT RIFLE</span><strong id="currentWeaponName">VANTA-4</strong><span class="weapon-fire-mode" id="fireMode">AUTO <i>•</i> 1</span></div><div class="ammo-count"><strong id="ammoCurrent">30</strong><span>/</span><span id="ammoReserve">120</span></div><div class="ammo-mark">▰▰<br>▰▰</div></div>
+    <div class="touch-controls" id="touchControls"><div id="movePad" class="move-pad"><span>MOVE</span></div><button id="touchFire" class="touch-fire">FIRE</button><button id="touchReload" class="touch-action">↻</button></div>
+  </section>
+
+  <section id="pausePanel" class="modal-layer hidden" aria-hidden="true"><div class="pause-window"><div class="eyebrow"><span class="eyebrow-line"></span> OPERATION PAUSED</div><h2>TAKE A<br><span>BREATHER.</span></h2><p>THE ARENA WILL WAIT. YOUR RIVALS WON'T.</p><div class="pause-actions"><button id="resumeBtn" class="btn-primary"><span>RESUME</span><span class="btn-arrow">↗</span></button><button id="pauseLoadoutBtn" class="btn-quiet">WEAPON LAB</button><button id="exitBtn" class="btn-quiet">END OPERATION</button></div></div></section>
+
+  <section id="resultPanel" class="modal-layer hidden" aria-hidden="true"><div class="result-window"><div class="eyebrow"><span class="eyebrow-line"></span> OPERATION COMPLETE</div><div class="result-kicker" id="resultKicker">CONTRACT FULFILLED</div><h2 id="resultTitle">WELL<br><span>PLAYED.</span></h2><div class="result-stats"><div><span>ELIMINATIONS</span><strong id="resultKills">00</strong></div><div><span>ACCURACY</span><strong id="resultAccuracy">0%</strong></div><div><span>TIME</span><strong id="resultTime">00:00</strong></div></div><button id="againBtn" class="btn-primary"><span>RUN IT BACK</span><span class="btn-arrow">↗</span></button><button id="resultExit" class="result-exit">BACK TO MAIN MENU</button></div></section>
+
+  <div id="toast" class="toast"></div>
+  <div class="orientation-note">ROTATE DEVICE TO PLAY</div>
+  <script type="module" src="./game.js"></script>
+</body>
+</html>
